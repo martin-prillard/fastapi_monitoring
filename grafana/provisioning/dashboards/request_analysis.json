@@ -1,0 +1,175 @@
+{
+  "id": null,
+  "uid": null,
+  "title": "FastAPI - Request Analysis",
+  "tags": ["fastapi", "requests", "traffic"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 0,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "timeseries",
+      "title": "Total Requests Over Time",
+      "targets": [
+        {
+          "expr": "api_requests_total",
+          "refId": "A",
+          "legendFormat": "Total Requests"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "timeseries",
+      "title": "Request Rate (Requests per Second)",
+      "targets": [
+        {
+          "expr": "rate(api_requests_total[1m])",
+          "refId": "A",
+          "legendFormat": "req/s"
+        }
+      ],
+      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "reqps"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "stat",
+      "title": "Current Request Rate",
+      "targets": [
+        {
+          "expr": "rate(api_requests_total[1m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 8, "w": 6, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "unit": "reqps",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"value": null, "color": "green"},
+              {"value": 1, "color": "yellow"},
+              {"value": 5, "color": "red"}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "stat",
+      "title": "Total Requests",
+      "targets": [
+        {
+          "expr": "api_requests_total",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 6, "y": 8, "w": 6, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "gauge",
+      "title": "Request Rate Gauge",
+      "targets": [
+        {
+          "expr": "rate(api_requests_total[1m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 12, "y": 8, "w": 6, "h": 8},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "unit": "reqps",
+          "min": 0,
+          "max": 10,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"value": null, "color": "green"},
+              {"value": 5, "color": "yellow"},
+              {"value": 8, "color": "red"}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "timeseries",
+      "title": "Request Rate - Multiple Time Windows",
+      "targets": [
+        {
+          "expr": "rate(api_requests_total[30s])",
+          "refId": "A",
+          "legendFormat": "30s window"
+        },
+        {
+          "expr": "rate(api_requests_total[1m])",
+          "refId": "B",
+          "legendFormat": "1min window"
+        },
+        {
+          "expr": "rate(api_requests_total[5m])",
+          "refId": "C",
+          "legendFormat": "5min window"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 12, "w": 24, "h": 8},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "reqps"
+        }
+      }
+    }
+  ]
+}

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   fastapi:
     build: .
@@ -28,9 +26,24 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
+      - ./grafana/provisioning/dashboards/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
       - ./grafana/provisioning/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     networks:
       - monitoring
+
+  locust:
+    image: locustio/locust:latest
+    container_name: locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./locustfile.py:/locust/locustfile.py
+    command: -f /locust/locustfile.py --host=http://fastapi:8000
+    networks:
+      - monitoring
+    depends_on:
+      - fastapi
 
 networks:
   monitoring:

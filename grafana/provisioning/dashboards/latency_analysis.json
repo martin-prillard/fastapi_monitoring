@@ -1,0 +1,151 @@
+{
+  "id": null,
+  "uid": null,
+  "title": "FastAPI - Latency Analysis",
+  "tags": ["fastapi", "latency", "performance"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 0,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "timeseries",
+      "title": "Latency Distribution (All Percentiles)",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "A",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.75, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "B",
+          "legendFormat": "p75"
+        },
+        {
+          "expr": "histogram_quantile(0.90, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "C",
+          "legendFormat": "p90"
+        },
+        {
+          "expr": "histogram_quantile(0.95, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "D",
+          "legendFormat": "p95"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "E",
+          "legendFormat": "p99"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 0, "w": 24, "h": 8},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "unit": "s"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "stat",
+      "title": "Mean Latency",
+      "targets": [
+        {
+          "expr": "rate(api_request_latency_seconds_sum[1m]) / rate(api_request_latency_seconds_count[1m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 0, "y": 8, "w": 6, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"value": null, "color": "green"},
+              {"value": 0.1, "color": "yellow"},
+              {"value": 0.5, "color": "red"}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "stat",
+      "title": "Median Latency",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 6, "y": 8, "w": 6, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "unit": "s"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "stat",
+      "title": "95th Percentile",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 12, "y": 8, "w": 6, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "unit": "s"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "type": "stat",
+      "title": "99th Percentile",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(api_request_latency_seconds_bucket[1m]))",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"x": 18, "y": 8, "w": 6, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "unit": "s"
+        }
+      }
+    }
+  ]
+}
